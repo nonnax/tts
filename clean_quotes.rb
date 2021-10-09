@@ -14,6 +14,7 @@ clean = {
   /^AMC\s*$/ => NEWLINE,
   /^We Heart It\s*$/ => NEWLINE,
   /^Tumblr\s*$/ => NEWLINE,
+  /^.+Tumblr\s*$/ => NEWLINE,
   /^The Nerd Daily\s*$/ => NEWLINE
 }
 #
