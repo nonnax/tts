@@ -11,6 +11,8 @@ require 'fileutils'
 
 f = ARGV.first
 
+exit unless f.match(/tts|md/)
+
 loop do
   f ||= Dir['*.md'].fzf(cmd: 'fzf --preview="nopages.rb {} | cat | format.rb"').first
   break unless f
