@@ -17,7 +17,7 @@ loop do
   f ||= Dir['*.md'].fzf(cmd: 'fzf --preview="nopages.rb {} | cat | format.rb"').first
   break unless f
 
-  FileUtils.cp(f, "#{f}.bak")
+	FileUtils.cp(f, "#{Time.now.to_i}_#{File.basename(f)}")
 
   res = IO.popen("cat #{f} | format.rb", &:read)
   res.prepend ".TTS\n"
