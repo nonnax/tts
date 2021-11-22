@@ -2,7 +2,7 @@
 # frozen_string_literal: true
 
 # Id$ nonnax 2021-10-07 21:15:22 +0800
-require 'core_ext'
+require 'rubytools/core_ext'
 # require 'fzf'
 times = []
 ENV['fs'].each_line do |f|

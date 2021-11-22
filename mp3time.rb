@@ -2,7 +2,7 @@
 # frozen_string_literal: true
 
 # Id$ nonnax 2021-10-07 21:15:22 +0800
-require 'core_ext'
+require 'rubytools/core_ext'
 times = []
 Dir['*.mp3'].each do |f|
   t = IO.popen("exiftool #{f}", &:readlines).grep(/Duration/).first.split(/:/, 2).last.scan(/\S+/).first

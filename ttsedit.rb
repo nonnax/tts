@@ -5,21 +5,27 @@
 # while editing shows pages and character count
 #
 # Id$ nonnax 2021-10-08 18:52:50 +0800
-require 'editor'
-require 'fzf'
+require 'rubytools/editor'
+require 'rubytools/fzf'
+require 'rubytools/time_and_date_ext'
 require 'fileutils'
 
 f = ARGV.first
 
 exit unless f.match(/tts|md/)
 
-loop do
+begin
   f ||= Dir['*.md'].fzf(cmd: 'fzf --preview="nopages.rb {} | cat | format.rb"').first
-  break unless f
+  # break unless f
+  exit unless f
 
-	FileUtils.cp(f, "#{Time.now.to_i}_#{File.basename(f)}")
+  # backup first
+  FileUtils.cp(f, "#{Time.now_to_s}_#{File.basename(f)}")
 
   res = IO.popen("cat #{f} | format.rb", &:read)
+  raise 'No Content Error' if res.chomp.strip.empty?
+
+  # exit
   res.prepend ".TTS\n"
   res = IO.editor(res.chomp)
   text = []
@@ -29,4 +35,6 @@ loop do
 
   File.open(f, 'w') { |io| io.write text.join }
   f = nil
+rescue StandardError => e
+  p e
 end

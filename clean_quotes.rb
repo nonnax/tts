@@ -1,7 +1,7 @@
 #!/usr/bin/env ruby
 # frozen_string_literal: true
 
-require 'core_ext'
+require 'rubytools/core_ext'
 NEWLINE = "\n" * 2
 lines = File.read(ARGV.first)
 clean = {

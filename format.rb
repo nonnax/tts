@@ -1,18 +1,19 @@
 #!/usr/bin/env ruby
 # frozen_string_literal: true
-# narrate.rb 
-# 	narrates a file or a piped stream 
+
+# narrate.rb
+# 	narrates a file or a piped stream
 # 	uses espeak or festival
-# 
+#
 # Id$ nonnax 2021-10-05 14:44:14 +0800
-require 'console'
-require 'string_ext'
+require 'rubytools/console_ext'
+require 'rubytools/string_ext'
 
 maxx, maxy = ANSIScreen.winsize
 
 def ARGS
-	# intercepts input params either as arguments or piped str
-	#
+  # intercepts input params either as arguments or piped str
+  #
   content =
     if !$stdin.tty? && !$stdin.closed?
       $stdin.read
@@ -34,21 +35,20 @@ content, start = ARGS() do |arg|
   end
 end
 
-CHUNK_SIZE=2
-para_size=content.paragraphs.each_slice(CHUNK_SIZE).to_a.size
+CHUNK_SIZE = 12
+para_size = content.paragraphs.each_slice(CHUNK_SIZE).to_a.size
 
 content.paragraphs.each_slice(CHUNK_SIZE).each_with_index do |cont, i|
-	paragraph_chunk=cont.join("\n\n")
-	puts "%d/%d (%d)." % [i+1, para_size, paragraph_chunk.size]
-	# puts
-	cont.each do |para|
-		para.sentences.each do |s|
-			puts s.lstrip.gsub(/\s{2,}/,' ')
-		end
-		puts
-	end
-	# puts paragraph_chunk
-	# puts ".~"*50
-	# puts
+  paragraph_chunk = cont.join("\n\n")
+  puts format('%d/%d (%d).', i + 1, para_size, paragraph_chunk.size)
+  # puts
+  cont.each do |para|
+    para.sentences.each do |s|
+      puts s.lstrip.gsub(/\s{2,}/, ' ')
+    end
+    puts
+  end
+  # puts paragraph_chunk
+  # puts ".~"*50
+  # puts
 end
-
