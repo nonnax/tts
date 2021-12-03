@@ -9,7 +9,7 @@
 require 'rubytools/console_ext'
 require 'rubytools/string_ext'
 
-maxx, maxy = ANSIScreen.winsize
+maxx, maxy = IO::Screen.winsize
 
 def ARGS
   # intercepts input params either as arguments or piped str
