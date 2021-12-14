@@ -8,11 +8,12 @@
 require 'rubytools/editor'
 require 'rubytools/fzf'
 require 'rubytools/time_and_date_ext'
+require 'rubytools/string_ext'
 require 'fileutils'
 
 f = ARGV.first
 
-exit unless f.match(/tts|md/)
+exit unless f.text_file? && f.match(/txt|tts|md/)
 
 begin
   f ||= Dir['*.md'].fzf(cmd: 'fzf --preview="nopages.rb {} | cat | format.rb"').first
