@@ -3,12 +3,26 @@
 
 # Id$ nonnax 2021-10-07 21:15:22 +0800
 require 'rubytools/core_ext'
+require 'rubytools/array_table'
+require 'csv'
+# require 'rubytools/thread_ext'
+
 times = []
+list=[]
 Dir['*.mp3'].each do |f|
-  t = IO.popen("exiftool #{f}", &:readlines).grep(/Duration/).first.split(/:/, 2).last.scan(/\S+/).first
-  ts = "0#{t.strip}.000"
-  ms = ts.to_ms
-  p [ts, ms]
-  times << ms
+  # Thread.new(times, list) do |times, list|
+    t = IO.popen("exiftool '#{f}'", &:readlines)
+    next unless t
+    t = t.grep(/Duration/).first.split(/:/, 2).last.scan(/\S+/).first 
+    ts = "0#{t.strip.gsub(/:/, '')}".to_f*1000
+    ms = ts.to_i
+    # list<<[f, (ts/1000).commify, ms.to_ts]
+    puts [f, (ts/1000).commify, ms.to_ts].to_csv
+    times<<ms
+    rescue=>e
+    # p e
+    next
+  # end.join
 end
-p [:Total_time, times.sum.to_ts]
+
+puts [:Total_time, (times.sum/1000.0).commify, times.sum.to_ts].to_csv
